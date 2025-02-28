@@ -52,6 +52,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
+        //https://google.github.io/osv.dev/
         target: "https://api.osv.dev/",
         changeOrigin: true,
         secure: false,

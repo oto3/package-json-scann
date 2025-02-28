@@ -17,27 +17,42 @@
 </template>
 
 <script lang="ts">
-import axios from 'axios'
-export default {
+import axios from "axios";
+export default defineComponent({
   data() {
     return {
       file: "",
-      content: "",
+      fileContent: "",
+      vulnerabilities: ""
+
     };
   },
   methods: {
     submitFile() {
-      console.log('File content: ', this.content)
-
+      console.log("File content: ", this.content);
       axios
-        .post("http://localhost:3000/api/v1/query", {"version": "2.4.1", "package": {"name": "jinja2", "ecosystem": "PyPI"}}, {
-          headers: {
-            'Access-Control-Allow-Origin': '*',
+        //https://google.github.io/osv.dev/post-v1-query/
+        .post(
+          "http://localhost:3000/api/v1/query",
+          {
+            commit: "",
+            version: "1.0.0",
+            package: {
+              name: "package-json-scann",
+              ecosystem: "",
+              purl: "",
+            },
+            pageToken: "",
           },
-        })
-        .then(function () {
-          console.log("SUCCESS!!");
-        })
+          {
+            headers: {
+              accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        //https://ossf.github.io/osv-schema/
+        .then(response => (this.vulnerabilities = response.data))
         .catch(function () {
           console.log("FAILURE!!");
         });
@@ -47,7 +62,7 @@ export default {
       const reader = new FileReader();
       if (this.file.name.includes(".json")) {
         reader.onload = (res) => {
-          this.content = res.target.result;
+          this.fileContent = res.target.result;
         };
         reader.onerror = (err) => console.log(err);
         reader.readAsText(this.file);
@@ -61,5 +76,5 @@ export default {
       }
     },
   },
-};
+});
 </script>
