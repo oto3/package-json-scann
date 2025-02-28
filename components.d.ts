@@ -7,9 +7,13 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    FileUpload: typeof import('./src/components/FileUpload.vue')['default']
+    Header: typeof import('./src/components/Header.vue')['default']
+    HeaderApp: typeof import('./src/components/HeaderApp.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     Home: typeof import('./src/components/Home.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Vulnerabilities: typeof import('./src/components/Vulnerabilities.vue')['default']
   }
 }

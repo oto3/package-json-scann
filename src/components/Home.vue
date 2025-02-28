@@ -1,61 +1,36 @@
 <template>
-  <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-      <label>File
-        <input
-          id="file"
-          ref="file"
-          type="file"
-          @:change="handleFileUpload()"
-        >
-      </label>
-      <button @:click="submitFile()">
-        Submit
-      </button>
-    </div>
-  </div>
+  <v-app>
+    <v-container>
+      <HeaderApp />
+      <FileUpload />
+      <v-divider />
+      <Vulnerabilities />
+    </v-container>
+  </v-app>
 </template>
 
 <script lang="ts">
-import axios from "axios";
-export default defineComponent({
+import HeaderApp from "./HeaderApp.vue";
+import FileUpload from "./FileUpload.vue";
+import Vulnerabilities from "./Vulnerabilities.vue";
+
+export default {
+  components: {
+    HeaderApp,
+    FileUpload,
+    Vulnerabilities,
+  },
   data() {
     return {
       file: "",
       fileContent: "",
       vulnerabilities: ""
-
     };
   },
+
   methods: {
     submitFile() {
       console.log("File content: ", this.content);
-      axios
-        //https://google.github.io/osv.dev/post-v1-query/
-        .post(
-          "http://localhost:3000/api/v1/query",
-          {
-            commit: "",
-            version: "1.0.0",
-            package: {
-              name: "package-json-scann",
-              ecosystem: "",
-              purl: "",
-            },
-            pageToken: "",
-          },
-          {
-            headers: {
-              accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        //https://ossf.github.io/osv-schema/
-        .then(response => (this.vulnerabilities = response.data))
-        .catch(function () {
-          console.log("FAILURE!!");
-        });
     },
     handleFileUpload() {
       this.file = this.$refs.file.files[0];
@@ -76,5 +51,5 @@ export default defineComponent({
       }
     },
   },
-});
+};
 </script>
