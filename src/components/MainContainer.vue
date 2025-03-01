@@ -7,7 +7,7 @@
         @submit-file="handleSubmitFile"
       />
       <v-divider />
-      <Vulnerabilities />
+      <Vulnerabilities :vulnerabilities="vulnerabilities" />
     </v-container>
   </v-app>
 </template>
@@ -37,8 +37,8 @@ export default {
     handleSubmitFile() {
       this.vulnerabilities = checkVulnerabilities(this.fileContent);
       // Mock temporary
-      this.vulnerabilities = vulnerabilitiesMocked;
-      console.log({...this.vulnerabilities.vulns[0]})
+      this.vulnerabilities = {...vulnerabilitiesMocked.vulns[0]};
+      console.log(this.vulnerabilities)
     },
     handleFileUpload(file) {
       this.file = file;
