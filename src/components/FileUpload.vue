@@ -6,14 +6,19 @@
       label="Select your package.json file"
       type="file"
       variant="underlined"
-      @:change="handleFileUpload()"
+      @:change="$emit('uploadFile', $refs.file.files[0])"
     />
     <v-btn
       :style="{ margin: '12px'}"
       variant="outlined"
-      @:click="submitFile()"
+      @:click="$emit('submitFile')"
     >
       Submit
     </v-btn>
   </v-container>
 </template>
+<script lang="ts">
+export default {
+emits: ['uploadFile', 'submitFile'],
+}
+</script>

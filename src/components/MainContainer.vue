@@ -2,7 +2,10 @@
   <v-app>
     <v-container>
       <HeaderApp />
-      <FileUpload />
+      <FileUpload
+        @upload-file="handleFileUpload"
+        @submit-file="handleSubmitFile"
+      />
       <v-divider />
       <Vulnerabilities />
     </v-container>
@@ -13,6 +16,8 @@
 import HeaderApp from "./HeaderApp.vue";
 import FileUpload from "./FileUpload.vue";
 import Vulnerabilities from "./Vulnerabilities.vue";
+import { checkVulnerabilities } from "@/api/checkVulnerabilities";
+import vulnerabilitiesMocked from "./Sample200Response.json";
 
 export default {
   components: {
@@ -23,17 +28,20 @@ export default {
   data() {
     return {
       file: "",
-      fileContent: "",
-      vulnerabilities: ""
+      fileContent: {},
+      vulnerabilities: {}
     };
   },
 
   methods: {
-    submitFile() {
-      console.log("File content: ", this.content);
+    handleSubmitFile() {
+      this.vulnerabilities = checkVulnerabilities(this.fileContent);
+      // Mock temporary
+      this.vulnerabilities = vulnerabilitiesMocked;
+      console.log({...this.vulnerabilities.vulns[0]})
     },
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
+    handleFileUpload(file) {
+      this.file = file;
       const reader = new FileReader();
       if (this.file.name.includes(".json")) {
         reader.onload = (res) => {
