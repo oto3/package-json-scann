@@ -1,15 +1,17 @@
 <template>
-  <v-container v-if="vulnerabilities.id">
+  <v-container v-if="vulns.id">
     <v-card class="mx-auto">
-      <v-list density="compact">
-        <v-list-subheader>General Info</v-list-subheader>
+      <v-list
+        :items="vulnerabilities"
+        density="compact"
+      >
         <v-list-item color="primary">
           <template #prepend>
             <v-text :style="{ minWidth: '240px' }">
               ID
             </v-text>
           </template>
-          <v-list-item-title>{{ vulnerabilities.id }}</v-list-item-title>
+          <v-list-item-title>{{ vulns.id }}</v-list-item-title>
         </v-list-item>
         <v-list-item color="primary">
           <template #prepend>
@@ -17,7 +19,7 @@
               Modified
             </v-text>
           </template>
-          <v-list-item-title>{{ vulnerabilities.modified }}</v-list-item-title>
+          <v-list-item-title>{{ vulns.modified }}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-card>
@@ -25,7 +27,7 @@
 </template>
 <script setup lang="ts">
 defineProps({
-  vulnerabilities: {
+  vulns: {
     type: Object,
     // eslint-disable-next-line vue/require-valid-default-prop
     default: {},

@@ -9,16 +9,23 @@
       @:change="$emit('uploadFile', $refs.file.files[0])"
     />
     <v-btn
-      :style="{ margin: '12px'}"
+      :style="{ margin: '12px' }"
       variant="outlined"
       @:click="$emit('submitFile')"
     >
       Submit
     </v-btn>
+    <v-btn
+      :style="{ margin: '12px' }"
+      variant="outlined"
+      @:click="$emit('useMockData')"
+    >
+      Use Mock Data
+    </v-btn>
   </v-container>
 </template>
 <script lang="ts">
 export default {
-emits: ['uploadFile', 'submitFile'],
-}
+  emits: ["uploadFile", "submitFile", "useMockData"],
+};
 </script>
