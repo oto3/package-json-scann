@@ -16,8 +16,7 @@
 import HeaderApp from "./HeaderApp.vue";
 import FileUpload from "./FileUpload.vue";
 import Vulnerabilities from "./Vulnerabilities.vue";
-import { checkVulnerabilities } from "@/api/checkVulnerabilities";
-import vulnerabilitiesMocked from "./Sample200Response.json";
+import { checkVulnerabilitiesQuery } from "@/api/checkVulnerabilities";
 
 export default {
   components: {
@@ -28,24 +27,21 @@ export default {
   data() {
     return {
       file: "",
-      fileContent: {},
-      vulnerabilities: {}
+      dependenciesList: [],
+      vulnerabilities: {},
     };
   },
 
   methods: {
     handleSubmitFile() {
-      this.vulnerabilities = checkVulnerabilities(this.fileContent);
-      // Mock temporary
-      this.vulnerabilities = {...vulnerabilitiesMocked.vulns[0]};
-      console.log(this.vulnerabilities)
+      this.vulnerabilities = checkVulnerabilitiesQuery(this.dependenciesList);
     },
     handleFileUpload(file) {
       this.file = file;
       const reader = new FileReader();
       if (this.file.name.includes(".json")) {
         reader.onload = (res) => {
-          this.fileContent = res.target.result;
+          this.createParamsProperty(res.target.result);
         };
         reader.onerror = (err) => console.log(err);
         reader.readAsText(this.file);
@@ -56,6 +52,20 @@ export default {
         };
         reader.onerror = (err) => console.log(err);
         reader.readAsText(this.file);
+      }
+    },
+    createParamsProperty(file) {
+      const { dependencies, devDependencies } = file && JSON.parse(file);
+      for (const [key, value] of Object.entries({
+        ...dependencies,
+        ...devDependencies,
+      })) {
+        this.dependenciesList.push({
+          version: value,
+          package: {
+            name: key,
+          },
+        });
       }
     },
   },
